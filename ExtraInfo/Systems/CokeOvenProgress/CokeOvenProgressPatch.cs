@@ -26,9 +26,17 @@ public static class CokeOvenProgressPatch
 
             if (!blockEntity.IsBurning) continue;
 
-            double totalBurnHours = blockEntity.Layers * blockEntity.BurnHoursPerLayer;
+            // Same correct formula as InfoExtensions.AppendFuelProgress: use the actual stack size, not Layers.
+            // The game removes one item at a time every BurnHoursPerLayer / 2 in-game hours, so the total burn
+            // time for the current pile is StackSize * BurnHoursPerLayer / 2 (which is only equal to
+            // Layers * BurnHoursPerLayer when the stack size is even).
+            int stackSize = blockEntity.OwnStackSize;
+            if (stackSize <= 0) continue;
+
+            double hoursPerItem = blockEntity.BurnHoursPerLayer / 2.0;
+            double totalBurnHours = stackSize * hoursPerItem;
             double burnStart = blockEntity.GetField<double>("burnStartTotalHours");
-            double hoursElapsed = world.Calendar.TotalHours - burnStart;
+            double hoursElapsed = Math.Max(0, world.Calendar.TotalHours - burnStart);
             double hoursRemaining = Math.Max(0, totalBurnHours - hoursElapsed);
 
             StringBuilder sb = new(__result);

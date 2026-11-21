@@ -135,7 +135,12 @@ public class ClayformingPlacementPreviewPatch
             mesh?.Dispose();
             previewMeshRefByPos.Remove(pos);
         }
+        // Reset ALL cached state so the next clay form the player looks at is detected as a change and the
+        // preview mesh is rebuilt. Previously lastVoxelZ and lastLayer were left stale, so ShouldUpdatePreview
+        // could skip rebuilding after switching to a different clay form.
         lastVoxelX = -1;
+        lastVoxelZ = -1;
+        lastLayer = -1;
         lastVoxelSize = null;
     }
 

@@ -17,20 +17,28 @@ public static class BurnablePileProgressPatch
         if (!__instance.IsBurning) return;
         if (___burnHoursPerItem <= 0 || __instance.Inventory == null || __instance.Inventory.Empty) return;
 
-        double elapsedOnCurrentItem = __instance.GetHoursLeft(__instance.Api.World.Calendar.TotalHours);
-        double hoursLeftInCurrentItem = Math.Max(0, ___burnHoursPerItem - elapsedOnCurrentItem);
+        // The game burns one stack item at a time every burnHoursPerItem in-game hours
+        // (see BlockEntityGroundStorage.OnBurningTickServer: while (TotalHours - burnStartTotalHours > burnHoursPerItem) { ... }).
+        // The private field burnStartTotalHours is advanced every time an item is consumed, so the correct
+        // remaining time is StackSize * burnHoursPerItem - (totalHours - burnStartTotalHours).
+        //
+        // Using the public GetHoursLeft(currentTotalHours) here is wrong: it returns Min(elapsed, totalCapacity),
+        // i.e. the elapsed time clamped to the total pile burn time. Treating that as "time elapsed on the current
+        // item" makes the displayed remaining time jump backwards every time an item is consumed.
+        double burnStart = __instance.GetField<double>("burnStartTotalHours");
+        int stackSize = __instance.Inventory[0].StackSize;
+        if (stackSize <= 0) return;
 
-        double hoursInItemsBelow = (__instance.Inventory[0].StackSize - 1) * ___burnHoursPerItem;
-        double totalRemainingHours = hoursInItemsBelow + hoursLeftInCurrentItem;
+        double totalCapacity = stackSize * ___burnHoursPerItem;
+        double hoursElapsed = Math.Max(0, __instance.Api.World.Calendar.TotalHours - burnStart);
+        double totalRemainingHours = Math.Max(0, totalCapacity - hoursElapsed);
 
-        double currentPileCapacity = __instance.Inventory[0].StackSize * ___burnHoursPerItem;
-
-        if (currentPileCapacity > 0)
+        if (totalCapacity > 0)
         {
             var props = new TimeBasedProgressBarProperties
             {
                 HeaderKey = Lang.Get("extrainfo:Fuel"),
-                HoursTotal = currentPileCapacity,
+                HoursTotal = totalCapacity,
                 HoursLeft = totalRemainingHours,
 
                 ShowProgressBar = Config.ShowProgressBars,

@@ -1,4 +1,4 @@
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
 using System.Linq;
 using System.Text;
@@ -12,7 +12,13 @@ namespace ExtraInfo.Systems.CementationFurnaceProgress;
 [HarmonyPatch(typeof(Block), nameof(Block.GetPlacedBlockInfo))]
 public static class CementationFurnaceProgressPatch
 {
-    private const double TotalCarburizationHours = 159.2;
+    /// <summary>
+    /// Total carburization time the game uses to scale the <c>progress</c> field (see
+    /// BlockEntityStoneCoffin.OnServerTick: progress += heatHoursReceived / 160.0). The process is flagged
+    /// complete once progress reaches 0.995, but the displayed bar should still use the same 160h denominator
+    /// so the percentage is consistent with the remaining hours.
+    /// </summary>
+    private const double TotalCarburizationHours = 160.0;
 
     [HarmonyPostfix]
     public static void Postfix(ref string __result, IWorldAccessor world, BlockPos pos)
@@ -53,7 +59,9 @@ public static class CementationFurnaceProgressPatch
             {
                 barProps.HeaderKey = Lang.Get(receivesHeat ? "extrainfo:WillFinishIn" : "Out of fuel.");
                 barProps.HoursTotal = TotalCarburizationHours;
-                barProps.HoursLeft = Math.Max(0, (1.0 - progress) * 160.0);
+                // Same denominator as the game uses to advance progress, so the bar percentage matches
+                // the displayed remaining hours.
+                barProps.HoursLeft = Math.Max(0, (1.0 - progress) * TotalCarburizationHours);
             }
 
             if (barProps.HoursTotal > 0)
@@ -75,7 +83,7 @@ public static class CementationFurnaceProgressPatch
                     {
                         if (!barAdded) sb.AppendLine().AppendLine();
                         else sb.AppendLine();
-                        
+
                         sb.Append($"{Lang.Get("extrainfo:Fuel")}: {Lang.Get("Not burning")}");
                     }
                 }
