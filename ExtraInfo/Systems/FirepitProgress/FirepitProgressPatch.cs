@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using System;
 using System.Text;
+using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.GameContent;
 
@@ -20,12 +21,16 @@ public static class FirepitProgressPatch
         int outputCount = blockEntity.outputSlot?.Itemstack?.StackSize ?? 0;
         int totalItems = inputCount + outputCount;
 
+        // The game advances the cooking counter by clamp((int)(temp / meltingPoint), 1, 30) per second,
+        // so counter units must be divided by that speed to get real seconds.
+        float cookingSpeed = GetCookingSpeed(blockEntity);
+
         // 1. Total crafting progress
         if (totalItems > 0)
         {
             float maxTime = blockEntity.maxCookingTime();
-            float totalMaxTime = totalItems * maxTime;
-            float totalRemaining = (inputCount * maxTime) - blockEntity.inputStackCookingTime;
+            float totalMaxTime = totalItems * maxTime / cookingSpeed;
+            float totalRemaining = ((inputCount * maxTime) - blockEntity.inputStackCookingTime) / cookingSpeed;
 
             var stackProps = new TimeBasedProgressBarProperties
             {
@@ -45,8 +50,8 @@ public static class FirepitProgressPatch
         // 2. Current crafting progress
         if (blockEntity.inputSlot != null && !blockEntity.inputSlot.Empty)
         {
-            float maxTime = blockEntity.maxCookingTime();
-            float remaining = maxTime - blockEntity.inputStackCookingTime;
+            float maxTime = blockEntity.maxCookingTime() / cookingSpeed;
+            float remaining = (blockEntity.maxCookingTime() - blockEntity.inputStackCookingTime) / cookingSpeed;
 
             if (maxTime > 0 && remaining > 0)
             {
@@ -69,18 +74,28 @@ public static class FirepitProgressPatch
         // 3. Fuel progress
         if (Config.ShowFuelProgress && blockEntity.IsBurning)
         {
-            // Total fuel
-            if (!blockEntity.fuelSlot.Empty && blockEntity.fuelSlot.StackSize > 1)
+            // The game burns fuel slower when the firepit is idle and already at its max temperature.
+            // Mirrors the condition in BlockEntityFirepit.OnBurnTick, so shown times are real seconds.
+            bool lowFuelConsumption = Math.Abs(blockEntity.furnaceTemperature - blockEntity.maxTemperature) < 50f && blockEntity.inputSlot.Empty;
+            float burnTimeMul = lowFuelConsumption ? blockEntity.emptyFirepitBurnTimeMulBonus : 1f;
+
+            // Total fuel: the item burning right now plus every item still waiting in the fuel slot
+            if (!blockEntity.fuelSlot.Empty)
             {
-                float burnPerItem = blockEntity.maxFuelBurnTime;
-                float totalStackBurn = burnPerItem * blockEntity.fuelSlot.StackSize;
-                float remainingInFullStack = (burnPerItem * (blockEntity.fuelSlot.StackSize - 1)) + blockEntity.fuelBurnTime;
+                ItemStack queuedFuel = blockEntity.fuelSlot.Itemstack;
+                CombustibleProperties? queuedProps = queuedFuel.Collectible.GetCombustibleProperties(blockEntity.Api.World, queuedFuel, null);
+
+                // Queued fuel may differ from the burning one, so take its own duration
+                float burnPerQueuedItem = (queuedProps?.BurnDuration ?? 0f) * blockEntity.BurnDurationModifier;
+                if (burnPerQueuedItem <= 0f) burnPerQueuedItem = blockEntity.maxFuelBurnTime;
+
+                float queuedBurn = burnPerQueuedItem * queuedFuel.StackSize;
 
                 var totalFuelProps = new TimeBasedProgressBarProperties
                 {
                     HeaderKey = Lang.Get("extrainfo:firepit-progress-fuel-total"),
-                    HoursTotal = totalStackBurn,
-                    HoursLeft = remainingInFullStack,
+                    HoursTotal = (blockEntity.maxFuelBurnTime + queuedBurn) * burnTimeMul,
+                    HoursLeft = (blockEntity.fuelBurnTime + queuedBurn) * burnTimeMul,
                     ShowInGameTime = false,
                     ShowProgressBar = false,
                     IsRawSeconds = true,
@@ -94,8 +109,8 @@ public static class FirepitProgressPatch
             var fuelProps = new TimeBasedProgressBarProperties
             {
                 HeaderKey = Lang.Get("extrainfo:firepit-progress-fuel-current"),
-                HoursTotal = blockEntity.maxFuelBurnTime,
-                HoursLeft = blockEntity.fuelBurnTime,
+                HoursTotal = blockEntity.maxFuelBurnTime * burnTimeMul,
+                HoursLeft = blockEntity.fuelBurnTime * burnTimeMul,
                 ShowInGameTime = false,
                 IsRawSeconds = true,
 
@@ -104,5 +119,25 @@ public static class FirepitProgressPatch
             };
             dsc.AppendLine().AppendLine(TimeFormatter.BuildTimeBlockPlusProgressBar(blockEntity.Api, fuelProps, reversed: true));
         }
+    }
+
+    /// <summary>
+    /// Mirrors BlockEntityFirepit.heatInput: while the input is at or above its melting point the cooking
+    /// counter grows by clamp((int)(temp / meltingPoint), 1, 30) per second. Below it the counter does not
+    /// grow at all, so speed 1 is used as the best-case projection. This is a projection for the current
+    /// temperature: the real speed rises as the input keeps heating up.
+    /// </summary>
+    private static float GetCookingSpeed(BlockEntityFirepit blockEntity)
+    {
+        ItemSlot? slot = blockEntity.inputSlot;
+        if (slot == null || slot.Empty) return 1f;
+
+        float meltingPoint = slot.Itemstack.Collectible.GetMeltingPoint(blockEntity.Api.World, (ISlotProvider)blockEntity.Inventory, slot);
+        if (meltingPoint <= 0f) return 1f;
+
+        float temp = blockEntity.InputStackTemp;
+        if (temp < meltingPoint) return 1f;
+
+        return Math.Clamp((int)(temp / meltingPoint), 1, 30);
     }
 }

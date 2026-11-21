@@ -680,3 +680,11 @@ itemAtlas-*
 entityAtlas-*
 Lib
 *.lscache
+
+configlib.dll
+ImGui.NET.dll
+ImGuiController_OpenTK.dll
+ImGuizmo.NET.dll
+ImNodes.NET.dll
+ImPlot.NET.dll
+VSImGui.dll

@@ -30,7 +30,9 @@ public class CollectibleBehaviorTreeGrowthDescription : CollectibleBehavior
             if (block == null) return;
             if (block.Attributes == null) return;
 
-            sproutDays = block.Attributes["sproutDays"].AsObject<NatFloat>();
+            // BlockEntitySapling reads "growthDays" for the seed stage and falls back to 1.5 +- 0.5 days
+            // when it is missing ("sproutDays" in the block json is not used by the game).
+            sproutDays = block.Attributes["growthDays"].AsObject(NatFloat.create(EnumDistribution.UNIFORM, 1.5f, 0.5f));
             matureDays = block.Attributes["matureDays"].AsObject<NatFloat>();
         }
         else if (inSlot.Itemstack.Collectible is BlockPlant block && !string.IsNullOrEmpty(block.EntityClass))

@@ -76,6 +76,8 @@ public static class AnimalPregnancyProgressPatch
         ["sheep"] = (20, 11),
         ["goat"] = (20, 11),
         ["pig"] = (25, 11),
+        ["hare"] = (5, 5),
+        ["fox"] = (5, 5),
     };
 
     private static (double PregnancyDays, double CooldownMax) ResolveMultiply(EntityBehaviorMultiply b)
