@@ -37,14 +37,13 @@ public static class FirepitProgressPatch
                 HeaderKey = Lang.Get("extrainfo:firepit-progress-smeltable-total") + " " + (blockEntity.inputSlot.Empty ? Lang.Get("{0}x {1}", blockEntity.outputSlot.StackSize, blockEntity.outputSlot.Itemstack.GetName()) : Lang.Get("{0}x {1}", totalItems, blockEntity.inputStack.GetName())),
                 HoursTotal = totalMaxTime,
                 HoursLeft = Math.Max(0, totalRemaining),
-                ShowInGameTime = false,
+                ShowInGameTime = Config.ShowInGameTimeInfo,
                 IsRawSeconds = true,
 
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo
+                ShowProgressBar = Config.ShowProgressPercent,
             };
 
-            dsc.AppendLine().AppendLine(TimeFormatter.BuildTimeBlockPlusProgressBar(blockEntity.Api, stackProps, reversed: false));
+            dsc.AppendLine().Append(TimeFormatter.BuildTimeBlockPlusProgressBar(blockEntity.Api, stackProps, reversed: false));
         }
 
         // 2. Current crafting progress
@@ -60,14 +59,13 @@ public static class FirepitProgressPatch
                     HeaderKey = Lang.Get("extrainfo:firepit-progress-smeltable-current") + " " + blockEntity.inputStack.GetName(),
                     HoursTotal = maxTime,
                     HoursLeft = remaining,
-                    ShowInGameTime = false,
+                    ShowInGameTime = Config.ShowInGameTimeInfo,
                     IsRawSeconds = true,
 
-                    ShowProgressBar = Config.ShowProgressBars,
-                    ShowRealTime = Config.ShowRealTimeInfo
+                    ShowProgressBar = Config.ShowProgressPercent,
                 };
 
-                dsc.AppendLine().AppendLine(TimeFormatter.BuildTimeBlockPlusProgressBar(blockEntity.Api, itemProps, reversed: false));
+                dsc.AppendLine().Append(TimeFormatter.BuildTimeBlockPlusProgressBar(blockEntity.Api, itemProps, reversed: false));
             }
         }
 
@@ -96,13 +94,12 @@ public static class FirepitProgressPatch
                     HeaderKey = Lang.Get("extrainfo:firepit-progress-fuel-total"),
                     HoursTotal = (blockEntity.maxFuelBurnTime + queuedBurn) * burnTimeMul,
                     HoursLeft = (blockEntity.fuelBurnTime + queuedBurn) * burnTimeMul,
-                    ShowInGameTime = false,
+                    ShowInGameTime = Config.ShowInGameTimeInfo,
                     ShowProgressBar = false,
                     IsRawSeconds = true,
 
-                    ShowRealTime = Config.ShowRealTimeInfo
                 };
-                dsc.AppendLine().AppendLine(TimeFormatter.BuildTimeBlockPlusProgressBar(blockEntity.Api, totalFuelProps, reversed: true));
+                dsc.AppendLine().Append(TimeFormatter.BuildTimeBlockPlusProgressBar(blockEntity.Api, totalFuelProps, reversed: true));
             }
 
             // Current fuel
@@ -111,13 +108,12 @@ public static class FirepitProgressPatch
                 HeaderKey = Lang.Get("extrainfo:firepit-progress-fuel-current"),
                 HoursTotal = blockEntity.maxFuelBurnTime * burnTimeMul,
                 HoursLeft = blockEntity.fuelBurnTime * burnTimeMul,
-                ShowInGameTime = false,
+                ShowInGameTime = Config.ShowInGameTimeInfo,
                 IsRawSeconds = true,
 
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo
+                ShowProgressBar = Config.ShowProgressPercent,
             };
-            dsc.AppendLine().AppendLine(TimeFormatter.BuildTimeBlockPlusProgressBar(blockEntity.Api, fuelProps, reversed: true));
+            dsc.AppendLine().Append(TimeFormatter.BuildTimeBlockPlusProgressBar(blockEntity.Api, fuelProps, reversed: true));
         }
     }
 

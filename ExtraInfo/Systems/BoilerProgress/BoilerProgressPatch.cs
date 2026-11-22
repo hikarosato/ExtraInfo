@@ -42,12 +42,11 @@ public static class BoilerProgressPatch
                 HoursLeft = Math.Max(0, smoothedFuelLeft),
 
                 ShowInGameTime = Config.ShowInGameTimeInfo,
-                ShowRealTime = Config.ShowRealTimeInfo,
-                ShowProgressBar = Config.ShowProgressBars,
+                ShowProgressBar = Config.ShowProgressPercent,
                 IsRawSeconds = false
             };
 
-            dsc.AppendLine().AppendLine().AppendLine(TimeFormatter.BuildTimeBlockPlusProgressBar(blockEntity.Api, fuelProps, reversed: true));
+            dsc.AppendLine().Append(TimeFormatter.BuildTimeBlockPlusProgressBar(blockEntity.Api, fuelProps, reversed: true));
         }
 
         __result = dsc.ToString();

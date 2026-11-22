@@ -41,15 +41,14 @@ public static class FruitTreeCuttingProgressPatch
 
         var barProps = new TimeBasedProgressBarProperties
         {
-            HeaderKey = Lang.Get("extrainfo:NextStageIn"),
+            HeaderKey = Lang.Get("extrainfo:TimeUntilRooting"),
             HoursTotal = totalHours,
             HoursLeft = Math.Clamp(daysLeft * hoursPerDay, 0, totalHours),
 
-            ShowProgressBar = Config.ShowProgressBars,
-            ShowRealTime = Config.ShowRealTimeInfo,
+            ShowProgressBar = Config.ShowProgressPercent,
             ShowInGameTime = Config.ShowInGameTimeInfo
         };
 
-        dsc.AppendLine().Append(TimeFormatter.BuildTimeBlockPlusProgressBar(api, barProps));
+        dsc.AppendLine().Append(TimeFormatter.BuildTimeBlockPlusProgressBar(api, barProps)).AppendLine();
     }
 }

@@ -28,8 +28,7 @@ public static class BloomeryProgressPatch
                 HoursTotal = totalDurationHours,
                 HoursLeft = hoursLeft,
 
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 

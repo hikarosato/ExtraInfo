@@ -1,10 +1,16 @@
 using System;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 
 namespace ExtraInfo;
 
 public static class TextExtensions
 {
+    public static string ColorText(string text)
+    {
+        return Lang.Get("extrainfo:Color.Cyan", text);
+    }
+
     public static string GetMinMax(NatFloat natFloat)
     {
         int min = GetMin(natFloat);

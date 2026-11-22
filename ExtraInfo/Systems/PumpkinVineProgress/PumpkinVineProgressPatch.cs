@@ -19,21 +19,32 @@ public static class PumpkinVineProgressPatch
 
         if (__instance is not BlockEntityPumpkinVine vine || vine.Api == null) return;
 
+        // Stage is encoded in the second-to-last code part (e.g. "pumpkin-vine-3-normal" / "pumpkin-vine-3-blooming" / "pumpkin-vine-4-withered").
+        // Stage 4 = withered: the game no longer grows it, so don't show a misleading "next stage" timer.
+        Block vineBlock = vine.Api.World.BlockAccessor.GetBlock(vine.Pos);
+        int vineStage = -1;
+        if (vineBlock?.Code?.Path != null)
+        {
+            int.TryParse(vineBlock.LastCodePart(1), out vineStage);
+        }
+        if (vineStage >= 4) return;
+
         double currentHours = vine.Api.World.Calendar.TotalHours;
 
-        // The vine block encodes its current stage in its last-but-one code part (e.g. "pumpkin-vine-2-normal").
-        // The game burns vineHoursToGrow (12h) per stage, except when transitioning out of stage 2 to stage 3,
-        // where GrowVine() also adds vineHoursToGrowStage2 (6h) on top of the regular vineHoursToGrow, so the
-        // total transition takes 18h. Using always vineHoursToGrow makes the bar show 100% for the first 6h of
-        // that stage transition. Blooming vines and stage-3 vines take just vineHoursToGrow again.
+        // 1. Vine progress.
+        //
+        // TryGrow() advances totalHoursForNextStage by vineHoursToGrow (12h) every stage.
+        // BUT: when transitioning out of stage 2, GrowVine() *also* adds vineHoursToGrowStage2 (6h)
+        // BEFORE the +12h from TryGrow — so the first time you see stage 3, the timer actually
+        // holds 18h, not 12h. canBloom == true marks exactly that case (it's set to true in the
+        // currentStage==2 branch, then cleared on the next GrowVine when currentStage==3).
+        // Blooming and second-and-later stage-3 ticks use the regular 12h.
         double vineHoursTotal = BlockEntityPumpkinVine.vineHoursToGrow;
-        Block vineBlock = vine.Api.World.BlockAccessor.GetBlock(vine.Pos);
-        if (int.TryParse(vineBlock.LastCodePart(1), out int vineStage) && vineStage == 2)
+        if (vineStage == 3 && vine.canBloom)
         {
-            vineHoursTotal = BlockEntityPumpkinVine.vineHoursToGrow + BlockEntityPumpkinVine.vineHoursToGrowStage2;
+            vineHoursTotal += BlockEntityPumpkinVine.vineHoursToGrowStage2;
         }
 
-        // 1. Vine progress
         double vineRemaining = vine.totalHoursForNextStage - currentHours;
 
         if (vineRemaining > 0)
@@ -43,8 +54,7 @@ public static class PumpkinVineProgressPatch
                 HeaderKey = Lang.Get("extrainfo:NextVineStageIn"),
                 HoursTotal = vineHoursTotal,
                 HoursLeft = Math.Min(vineRemaining, vineHoursTotal),
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 
@@ -65,8 +75,7 @@ public static class PumpkinVineProgressPatch
                         HeaderKey = Lang.Get("extrainfo:NextPumpkinStageIn"),
                         HoursTotal = BlockEntityPumpkinVine.pumpkinHoursToGrow,
                         HoursLeft = Math.Min(fruitRemaining, BlockEntityPumpkinVine.pumpkinHoursToGrow),
-                        ShowProgressBar = Config.ShowProgressBars,
-                        ShowRealTime = Config.ShowRealTimeInfo,
+                        ShowProgressBar = Config.ShowProgressPercent,
                         ShowInGameTime = Config.ShowInGameTimeInfo
                     };
 

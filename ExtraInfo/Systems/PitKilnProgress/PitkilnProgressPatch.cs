@@ -30,8 +30,7 @@ public static class PitKilnProgressPatch
                 HoursTotal = __instance.BurnTimeHours,
                 HoursLeft = hoursRemaining,
 
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 

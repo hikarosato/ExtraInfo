@@ -36,8 +36,6 @@ public static class AnimalPregnancyProgressPatch
             else
             {
                 infotext.AppendLine().Append(BuildBar(api, "extrainfo:animal-will-give-birth-in", totalDurationHours, hoursLeft));
-                infotext.AppendLine();
-                infotext.AppendLine();
             }
         }
         else
@@ -51,8 +49,6 @@ public static class AnimalPregnancyProgressPatch
                 double hoursLeft = cooldownLeft * hoursPerDay;
 
                 infotext.AppendLine().Append(BuildBar(api, "extrainfo:animal-ready-to-mate-in", totalCooldownHours, hoursLeft));
-                infotext.AppendLine();
-                infotext.AppendLine();
             }
         }
     }
@@ -64,8 +60,7 @@ public static class AnimalPregnancyProgressPatch
             HeaderKey = Lang.Get(headerKey),
             HoursTotal = totalHours,
             HoursLeft = hoursLeft,
-            ShowProgressBar = Config.ShowProgressBars,
-            ShowRealTime = Config.ShowRealTimeInfo,
+            ShowProgressBar = Config.ShowProgressPercent,
             ShowInGameTime = Config.ShowInGameTimeInfo
         };
         return TimeFormatter.BuildTimeBlockPlusProgressBar(api, barProps);

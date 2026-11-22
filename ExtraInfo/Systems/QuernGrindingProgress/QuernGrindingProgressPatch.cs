@@ -13,7 +13,7 @@ public static class QuernGrindingProgressPatch
     public static void Postfix(BlockEntityOpenableContainer __instance, StringBuilder dsc)
     {
         if (!ApplyTimersOrProgressBars()) return;
-        if (!Config.ShowProgressBars) return;
+        if (!Config.ShowProgressPercent) return;
         if (!Config.ShowQuernGrindingProgress) return;
         if (__instance is not BlockEntityQuern blockEntity) return;
 
@@ -23,7 +23,7 @@ public static class QuernGrindingProgressPatch
         if (inputCount == 0 && outputCount > 0 && !blockEntity.CanGrind())
         {
             dsc.AppendLine();
-            dsc.AppendLine(Lang.Get("extrainfo:quern-progress-info-header-total"));
+            dsc.Append(Lang.Get("extrainfo:quern-progress-info-header-total")).Append(' ');
             ProgressBarBuilder.Build(dsc, 100f);
             dsc.AppendLine();
             return;
@@ -43,11 +43,11 @@ public static class QuernGrindingProgressPatch
 
         dsc.AppendLine();
 
-        dsc.AppendLine(Lang.Get("extrainfo:quern-progress-info-header-total"));
+        dsc.Append(Lang.Get("extrainfo:quern-progress-info-header-total")).Append(' ');
         ProgressBarBuilder.Build(dsc, (float)totalPercent);
         dsc.AppendLine();
 
-        dsc.AppendLine(Lang.Get("extrainfo:quern-progress-info-header-single-item"));
+        dsc.Append(Lang.Get("extrainfo:quern-progress-info-header-single-item")).Append(' ');
         ProgressBarBuilder.Build(dsc, (float)perItemPercent);
         dsc.AppendLine();
     }

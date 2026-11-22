@@ -44,8 +44,7 @@ public static class CementationFurnaceProgressPatch
 
             var barProps = new TimeBasedProgressBarProperties()
             {
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 
@@ -66,7 +65,6 @@ public static class CementationFurnaceProgressPatch
 
             if (barProps.HoursTotal > 0)
             {
-                sb.AppendLine().AppendLine();
                 sb.AppendLine(TimeFormatter.BuildTimeBlockPlusProgressBar(world.Api, barProps));
                 barAdded = true;
             }

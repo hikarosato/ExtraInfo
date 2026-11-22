@@ -15,8 +15,6 @@ public static class BlockBreakingTimePatch
     [HarmonyPostfix]
     public static void Postfix(ref string __result, IWorldAccessor world, BlockPos pos)
     {
-        if (!ApplyTimersOrProgressBars()) return;
-        if (!Config.ShowProgressBars) return;
         if (!Config.ShowBlockBreakingTime) return;
 
         var damagedBlocks = (world as ClientMain)?.GetField<Dictionary<BlockPos, BlockDamage>>("damagedBlocks");
@@ -29,7 +27,7 @@ public static class BlockBreakingTimePatch
 
         StringBuilder sb = new(__result);
         sb.AppendLine();
-        sb.AppendLine(Lang.Get("extrainfo:block-info-header-until-broken"));
+        sb.Append(Lang.Get("extrainfo:block-info-header-until-broken")).Append(' ');
         ProgressBarBuilder.Build(sb, completedPercent);
         __result = sb.ToString().TrimEnd();
     }

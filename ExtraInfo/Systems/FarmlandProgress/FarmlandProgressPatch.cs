@@ -43,8 +43,7 @@ public static class FarmlandProgressPatch
                 HoursTotal = totalStageWindow,
                 HoursLeft = hoursRemaining,
 
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 
@@ -71,8 +70,7 @@ public static class FarmlandProgressPatch
             HoursTotal = wholeCycleHours,
             HoursLeft = Math.Clamp(totalHoursLeft, 0, wholeCycleHours),
 
-            ShowProgressBar = Config.ShowProgressBars,
-            ShowRealTime = Config.ShowRealTimeInfo,
+            ShowProgressBar = Config.ShowProgressPercent,
             ShowInGameTime = Config.ShowInGameTimeInfo
         };
 

@@ -33,8 +33,7 @@ public static class CharcoalPitProgressPatch
 
             var props = new TimeBasedProgressBarProperties()
             {
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 

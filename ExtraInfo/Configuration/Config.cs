@@ -3,19 +3,13 @@ namespace ExtraInfo.Configuration;
 public class Config
 {
     #region General
-    public bool ShowRealTimeInfo { get; set; } = true;
     public bool ShowInGameTimeInfo { get; set; } = true;
     public bool ShowBlockBreakingTime { get; set; } = true;
     public bool ShowBlockTransitionInfo { get; set; } = true;
     public bool ShowFuelProgress { get; set; } = true;
     #endregion
     #region ProgressBar
-    public bool ShowProgressBars { get; set; } = true;
-    public char ProgressBarFillChar { get; set; } = '#';
-    public char ProgressBarEmptyChar { get; set; } = '_';
-    public char ProgressBarStartCap { get; set; } = '[';
-    public char ProgressBarEndCap { get; set; } = ']';
-    public int ProgressBarWidth { get; set; } = 20;
+    public bool ShowProgressPercent { get; set; } = false;
     #endregion
     #region Clayforming
     public bool ShowClayformingPlacementPreview { get; set; } = true;

@@ -19,8 +19,6 @@ public static class BlockTransitionInfoPatch
         TransientProperties props = blockEntity.GetField<TransientProperties>("props");
         if (props == null) return;
 
-        blockEntity.CheckTransition(0);
-
         double hoursLeft = blockEntity.GetField<double>("transitionHoursLeft");
 
         if (hoursLeft > 0)
@@ -31,17 +29,14 @@ public static class BlockTransitionInfoPatch
                 HoursTotal = props.InGameHours,
                 HoursLeft = hoursLeft,
 
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 
             string verticalBlock = TimeFormatter.BuildTimeBlockPlusProgressBar(blockEntity.Api, barProps);
 
             dsc.AppendLine()
-                .Append(verticalBlock)
-                .AppendLine()
-                .AppendLine();
+                .Append(verticalBlock);
         }
     }
 }

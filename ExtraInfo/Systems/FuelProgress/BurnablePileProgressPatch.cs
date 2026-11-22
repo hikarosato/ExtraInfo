@@ -41,8 +41,7 @@ public static class BurnablePileProgressPatch
                 HoursTotal = totalCapacity,
                 HoursLeft = totalRemainingHours,
 
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 

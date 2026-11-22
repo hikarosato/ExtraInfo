@@ -29,7 +29,6 @@ public class ConfigLibCompatibility
         if (BeginSection(id, "General"))
         {
             ImGui.Indent();
-            DrawCheckBox(id, config, nameof(config.ShowRealTimeInfo));
             DrawCheckBox(id, config, nameof(config.ShowInGameTimeInfo));
             DrawCheckBox(id, config, nameof(config.ShowBlockBreakingTime));
             DrawCheckBox(id, config, nameof(config.ShowBlockTransitionInfo));
@@ -40,14 +39,7 @@ public class ConfigLibCompatibility
         if (BeginSection(id, "ProgressBar"))
         {
             ImGui.Indent();
-            bool changedAnyValue = false;
-            changedAnyValue |= DrawCheckBox(id, config, nameof(config.ShowProgressBars));
-            changedAnyValue |= DrawPickSymbol(id, config, nameof(config.ProgressBarFillChar));
-            changedAnyValue |= DrawPickSymbol(id, config, nameof(config.ProgressBarEmptyChar));
-            changedAnyValue |= DrawPickSymbol(id, config, nameof(config.ProgressBarStartCap));
-            changedAnyValue |= DrawPickSymbol(id, config, nameof(config.ProgressBarEndCap));
-            changedAnyValue |= DrawInputInt(id, config, nameof(config.ProgressBarWidth), 50);
-            DrawProgressBarPreview(api, changedAnyValue);
+            DrawCheckBox(id, config, nameof(config.ShowProgressPercent));
             ImGui.Unindent();
             EndSection();
         }
@@ -260,76 +252,6 @@ public class ConfigLibCompatibility
         }
 
         return newValue;
-    }
-
-    private static float _progressBarTimeSinceChange = -100f;
-
-    private static void DrawProgressBarPreview(ICoreAPI api, bool changed)
-    {
-        if (changed) _progressBarTimeSinceChange = (float)ImGui.GetTime();
-
-        ImGui.Spacing();
-        ImGui.SeparatorText(Lang.Get($"{MOD_ID}:Config.Setting.Preview"));
-
-        Vector2 size = new Vector2(ImGui.GetContentRegionAvail().X, 80);
-        ImGui.Dummy(size);
-        Vector2 pMin = ImGui.GetItemRectMin();
-        Vector2 pMax = ImGui.GetItemRectMax();
-        Vector2 center = (pMin + pMax) * 0.5f;
-
-        var barProps = new TimeBasedProgressBarProperties { IsRawSeconds = true, HoursLeft = 367, HoursTotal = 1100 };
-        string fullText = TimeFormatter.BuildTimeBlockPlusProgressBar(api, barProps);
-        string[] lines = fullText.Split(["\r\n", "\r", "\n"], StringSplitOptions.None);
-
-        float time = (float)ImGui.GetTime();
-        float timeSinceChange = time - _progressBarTimeSinceChange;
-        var dl = ImGui.GetWindowDrawList();
-
-        float intensity = Math.Max(0, 1.0f - timeSinceChange);
-
-        float angle = (float)Math.Sin(time * 30.0f) * 0.15f * intensity;
-        float scale = 1.0f + (float)Math.Abs(Math.Sin(time * 40.0f)) * 0.1f * intensity;
-
-        Vector2[] corners = new Vector2[4]
-        {
-            Rotate(pMin, center, angle, scale),
-            Rotate(new Vector2(pMax.X, pMin.Y), center, angle, scale),
-            Rotate(pMax, center, angle, scale),
-            Rotate(new Vector2(pMin.X, pMax.Y), center, angle, scale)
-        };
-
-        dl.AddQuadFilled(corners[0], corners[1], corners[2], corners[3], ImGui.GetColorU32(ImGuiCol.FrameBg));
-        dl.AddQuad(corners[0], corners[1], corners[2], corners[3], ImGui.GetColorU32(ImGuiCol.Border), 1.0f);
-
-        float fontSize = ImGui.GetFontSize();
-        float lineHeight = fontSize * scale;
-        float totalHeight = lines.Length * lineHeight;
-        float currentYOffset = 0;
-
-        foreach (string line in lines)
-        {
-            float charXOffset = 0;
-            Vector2 lineSize = ImGui.CalcTextSize(line);
-            float startX = (size.X - (lineSize.X * scale)) * 0.5f;
-
-            foreach (char letter in line)
-            {
-                string s = letter.ToString();
-                Vector2 charSize = ImGui.CalcTextSize(s);
-
-                Vector2 localPos = new Vector2(
-                    (pMin.X + startX + charXOffset) - center.X,
-                    (pMin.Y + currentYOffset + (size.Y - totalHeight) * 0.5f) - center.Y
-                );
-
-                Vector2 rotatedCharPos = Rotate(center + localPos, center, angle, 1.0f);
-
-                dl.AddText(ImGui.GetFont(), fontSize * scale, rotatedCharPos, ImGui.GetColorU32(ImGuiCol.Text), s);
-
-                charXOffset += charSize.X * scale;
-            }
-            currentYOffset += lineHeight;
-        }
     }
 
     private static Vector2 Rotate(Vector2 point, Vector2 center, float angle, float scale)

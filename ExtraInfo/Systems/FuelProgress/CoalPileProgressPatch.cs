@@ -19,7 +19,7 @@ public static class CoalPileProgressPatch
         if (!coalPile.IsBurning) return;
 
         // AppendFuelProgress itself decides what to render (bar and/or in-game/real time) based on the same
-        // config flags, so we should not short-circuit here on !ShowProgressBars - that would also hide the
+        // config flags, so we should not short-circuit here on !ShowProgressPercent - that would also hide the
         // remaining-time text even when the user only disabled the bar itself.
         dsc.AppendLine();
         InfoExtensions.AppendFuelProgress(dsc, coalPile, Lang.Get("extrainfo:Fuel"));

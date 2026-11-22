@@ -32,8 +32,7 @@ public static class BeehiveKilnProgressPatch
             HoursTotal = hoursTotal,
             HoursLeft = hoursLeft,
 
-            ShowProgressBar = Config.ShowProgressBars,
-            ShowRealTime = Config.ShowRealTimeInfo,
+            ShowProgressBar = Config.ShowProgressPercent,
             ShowInGameTime = Config.ShowInGameTimeInfo
         };
 

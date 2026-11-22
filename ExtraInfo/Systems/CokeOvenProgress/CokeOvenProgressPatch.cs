@@ -40,7 +40,7 @@ public static class CokeOvenProgressPatch
             double hoursRemaining = Math.Max(0, totalBurnHours - hoursElapsed);
 
             StringBuilder sb = new(__result);
-            sb.AppendLine().AppendLine();
+            sb.AppendLine();
 
             TimeBasedProgressBarProperties barProps = new()
             {
@@ -48,8 +48,7 @@ public static class CokeOvenProgressPatch
                 HoursTotal = totalBurnHours,
                 HoursLeft = hoursRemaining,
 
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 

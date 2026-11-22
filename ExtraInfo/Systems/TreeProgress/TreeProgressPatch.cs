@@ -34,8 +34,7 @@ public static class TreeProgressPatch
                 HoursTotal = totalStageHours,
                 HoursLeft = Math.Clamp(hoursRemaining, 0, totalStageHours),
 
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 
@@ -62,8 +61,7 @@ public static class TreeProgressPatch
                 HoursTotal = wholeHours,
                 HoursLeft = Math.Clamp(hoursRemaining + matureHours, 0, wholeHours),
 
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 

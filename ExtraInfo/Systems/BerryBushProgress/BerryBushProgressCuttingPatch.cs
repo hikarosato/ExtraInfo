@@ -33,8 +33,7 @@ public static class BerryBushProgressCuttingPatch
                 HoursTotal = totalHours,
                 HoursLeft = Math.Clamp(hoursLeft, 0, totalHours),
 
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 

@@ -40,8 +40,7 @@ public static class InfoExtensions
             HoursTotal = totalCapacity,
             HoursLeft = totalRemaining,
 
-            ShowProgressBar = Config.ShowProgressBars,
-            ShowRealTime = Config.ShowRealTimeInfo,
+            ShowProgressBar = Config.ShowProgressPercent,
             ShowInGameTime = Config.ShowInGameTimeInfo
         };
 
@@ -51,6 +50,6 @@ public static class InfoExtensions
 
     public static bool ApplyTimersOrProgressBars()
     {
-        return Config != null && (Config.ShowProgressBars || Config.ShowRealTimeInfo || Config.ShowInGameTimeInfo);
+        return Config != null && (Config.ShowProgressPercent || Config.ShowInGameTimeInfo);
     }
 }

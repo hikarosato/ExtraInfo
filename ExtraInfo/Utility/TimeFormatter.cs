@@ -7,6 +7,14 @@ namespace ExtraInfo;
 
 public static class TimeFormatter
 {
+    // Same format as in ExtraInfo 2.0.1: "N hours, M minutes" (both rounded down), game time.
+    public static string HoursAndMinutes(double hours)
+    {
+        if (double.IsNaN(hours) || double.IsInfinity(hours) || hours < 0) hours = 0;
+        double minutes = Math.Floor((hours - Math.Truncate(hours)) * 60.0);
+        return Lang.Get("{0} hours, {1} minutes", Math.Floor(hours), minutes);
+    }
+
     public static string FormatFullTime(double totalSeconds)
     {
         if (double.IsNaN(totalSeconds) || double.IsInfinity(totalSeconds)) return "";
@@ -60,7 +68,7 @@ public static class TimeFormatter
 
     public static string BuildTimeBlockPlusProgressBar(ICoreAPI api, TimeBasedProgressBarProperties props, bool reversed = false)
     {
-        if (!props.ShowProgressBar && !props.ShowInGameTime && !props.ShowRealTime) return "";
+        if (!props.ShowProgressBar && !props.ShowInGameTime) return "";
 
         float completedPercent = 0;
         if (props.HoursTotal > 0)
@@ -70,44 +78,27 @@ public static class TimeFormatter
         }
 
         double igSeconds;
-        double irlSeconds;
-
         if (props.IsRawSeconds)
-        {
-            igSeconds = props.HoursLeft;
-            irlSeconds = props.HoursLeft;
-        }
+            igSeconds = props.HoursLeft * api.World.Calendar.SpeedOfTime * api.World.Calendar.CalendarSpeedMul;
         else
-        {
-            float speedOfTime = api.World.Calendar.SpeedOfTime;
-            float calendarMul = api.World.Calendar.CalendarSpeedMul;
             igSeconds = props.HoursLeft * 3600;
-            irlSeconds = (igSeconds / speedOfTime) / calendarMul;
-        }
 
         var sb = new StringBuilder();
-        if (!string.IsNullOrEmpty(props.HeaderKey)) sb.AppendLine(props.HeaderKey);
 
+        // Text
+        if (!string.IsNullOrEmpty(props.HeaderKey))
+            sb.Append(props.HeaderKey.TrimEnd()).Append(' ');
+
+        // %
         if (props.ShowProgressBar)
         {
             ProgressBarBuilder.Build(sb, completedPercent);
-            sb.AppendLine();
+            sb.Append('\u00A0');
         }
 
-        if (igSeconds > 0)
-        {
-            string igTimeStr = FormatFullTime(igSeconds);
-            string irlTimeStr = FormatFullTime(irlSeconds);
-
-            if (props.ShowInGameTime)
-            {
-                sb.AppendLine(Lang.Get("extrainfo:InGameTime", igTimeStr));
-            }
-            if (props.ShowRealTime)
-            {
-                sb.AppendLine(Lang.Get("extrainfo:InRealTime", irlTimeStr));
-            }
-        }
+        // Time
+        if (igSeconds > 0 && props.ShowInGameTime)
+            sb.Append(TextExtensions.ColorText(HoursAndMinutes(igSeconds / 3600.0)));
 
         return sb.ToString().TrimEnd();
     }

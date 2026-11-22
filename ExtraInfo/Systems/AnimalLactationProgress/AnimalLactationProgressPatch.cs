@@ -43,12 +43,11 @@ public static class AnimalLactationProgressPatch
                 HeaderKey = Lang.Get("extrainfo:animal-milk-refill-in"),
                 HoursTotal = hoursPerDay,
                 HoursLeft = refillHoursLeft,
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 
-            infotext.AppendLine().Append(TimeFormatter.BuildTimeBlockPlusProgressBar(api, refillProps)).AppendLine().AppendLine();
+            infotext.AppendLine().Append(TimeFormatter.BuildTimeBlockPlusProgressBar(api, refillProps));
         }
 
         double lactationHoursLeft = lactationDaysLeft * hoursPerDay;
@@ -59,11 +58,10 @@ public static class AnimalLactationProgressPatch
             HeaderKey = Lang.Get("extrainfo:animal-lactation-ends-in"),
             HoursTotal = totalLactationHours,
             HoursLeft = lactationHoursLeft,
-            ShowProgressBar = Config.ShowProgressBars,
-            ShowRealTime = Config.ShowRealTimeInfo,
+            ShowProgressBar = Config.ShowProgressPercent,
             ShowInGameTime = Config.ShowInGameTimeInfo
         };
 
-        infotext.AppendLine().Append(TimeFormatter.BuildTimeBlockPlusProgressBar(api, lactationProps)).AppendLine().AppendLine();
+        infotext.AppendLine().Append(TimeFormatter.BuildTimeBlockPlusProgressBar(api, lactationProps)).AppendLine();
     }
 }

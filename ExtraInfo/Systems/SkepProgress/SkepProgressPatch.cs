@@ -33,8 +33,7 @@ public static class SkepProgressPatch
                 HoursTotal = honeyTotal,
                 HoursLeft = Math.Clamp(honeyHoursLeft, 0, honeyTotal),
 
-                ShowProgressBar = Config.ShowProgressBars,
-                ShowRealTime = Config.ShowRealTimeInfo,
+                ShowProgressBar = Config.ShowProgressPercent,
                 ShowInGameTime = Config.ShowInGameTimeInfo
             };
 
