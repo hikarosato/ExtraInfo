@@ -23,7 +23,7 @@ public static class BerryBushProgressCuttingPatch
         if (daysRemaining > 0)
         {
             double maxMonths = __instance.Block.Attributes["matureTotalMonthsMax"].AsDouble(4);
-            
+
             double totalHours = maxMonths * api.World.Calendar.DaysPerMonth * api.World.Calendar.HoursPerDay;
             double hoursLeft = daysRemaining * api.World.Calendar.HoursPerDay;
 

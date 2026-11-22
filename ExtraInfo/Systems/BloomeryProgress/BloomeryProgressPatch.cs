@@ -33,7 +33,7 @@ public static class BloomeryProgressPatch
             };
 
             string verticalBlock = TimeFormatter.BuildTimeBlockPlusProgressBar(__instance.Api, barProps);
-            
+
             dsc.AppendLine().Append(verticalBlock);
         }
     }

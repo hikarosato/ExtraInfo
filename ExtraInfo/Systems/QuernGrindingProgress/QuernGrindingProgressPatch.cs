@@ -12,8 +12,6 @@ public static class QuernGrindingProgressPatch
     [HarmonyPostfix]
     public static void Postfix(BlockEntityOpenableContainer __instance, StringBuilder dsc)
     {
-        if (!ApplyTimersOrProgressBars()) return;
-        if (!Config.ShowProgressPercent) return;
         if (!Config.ShowQuernGrindingProgress) return;
         if (__instance is not BlockEntityQuern blockEntity) return;
 

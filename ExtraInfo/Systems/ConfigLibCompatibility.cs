@@ -1,7 +1,6 @@
 using ConfigLib;
 using ExtraInfo.Configuration;
 using ImGuiNET;
-using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Vintagestory.API.Common;
@@ -139,21 +138,6 @@ public class ConfigLibCompatibility
         return false;
     }
 
-    private static bool DrawInputInt(string id, Configuration.Config config, string propertyName, int max = 100)
-    {
-        var propertyInfo = config.GetType().GetProperty(propertyName);
-        int configValue = (int)propertyInfo.GetValue(config);
-        ImGui.SetNextItemWidth(100);
-        if (ImGui.InputInt($"##{propertyName}-{id}", ref configValue, 1, 10))
-        {
-            propertyInfo.SetValue(config, Math.Clamp(configValue, 0, max));
-            return true;
-        }
-        ImGui.SameLine();
-        ImGui.Text(Lang.Get($"{MOD_ID}:Config.Setting.{propertyName}"));
-        return false;
-    }
-
     private static void DrawPickColor(string id, Configuration.Config config, string propertyName)
     {
         var propertyInfo = config.GetType().GetProperty(propertyName);
@@ -164,23 +148,6 @@ public class ConfigLibCompatibility
 
         ImGui.SameLine();
         ImGui.Text(Lang.Get($"{MOD_ID}:Config.Setting.{propertyName}"));
-    }
-
-    private static bool DrawPickSymbol(string id, Configuration.Config config, string propertyName)
-    {
-        var propertyInfo = config.GetType().GetProperty(propertyName);
-        char configValue = (char)propertyInfo.GetValue(config);
-        char newValue = PickSymbolInternal(id, configValue, propertyName);
-
-        ImGui.SameLine();
-        ImGui.Text(Lang.Get($"{MOD_ID}:Config.Setting.{propertyName}"));
-
-        if (newValue != configValue)
-        {
-            propertyInfo.SetValue(config, newValue);
-            return true;
-        }
-        return false;
     }
 
     private static byte[] PickColorInternal(string id, byte[] color, string name)
@@ -252,16 +219,5 @@ public class ConfigLibCompatibility
         }
 
         return newValue;
-    }
-
-    private static Vector2 Rotate(Vector2 point, Vector2 center, float angle, float scale)
-    {
-        float cos = (float)Math.Cos(angle);
-        float sin = (float)Math.Sin(angle);
-        Vector2 rel = (point - center) * scale;
-        return new Vector2(
-            rel.X * cos - rel.Y * sin + center.X,
-            rel.X * sin + rel.Y * cos + center.Y
-        );
     }
 }

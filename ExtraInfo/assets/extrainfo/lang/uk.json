@@ -4,11 +4,14 @@
   "Config.Setting.ShowBlockBreakingTime": "Час руйнування блока",
   "Config.Setting.ShowBlockTransitionInfo": "Прогрес перетворення блоків (колоди зі смолою, факели тощо)",
   "Config.Setting.ShowFuelProgress": "Прогрес палива та вугільних куп",
+
   "Config.Category.ProgressBar": "Прогрес",
   "Config.Setting.ShowProgressPercent": "Показувати відсотки прогресу",
+
   "Config.Category.Clayforming": "Формування глини",
   "Config.Setting.ShowClayformingPlacementPreview": "Попередній перегляд розміщення",
   "Config.Setting.ClayformingPlacementPreviewColor": "Колір попереднього перегляду",
+
   "Config.Category.Handbook": "Довідник",
   "Config.Setting.OpenHandbookPageForEntity": "Дозволити відкривати сторінку довідника для істоти, на яку ви дивитеся",
   "Config.Setting.ShowHandbookCreatureDiet": "Раціон істот",
@@ -19,19 +22,22 @@
   "Config.Setting.ShowHandbookTraderGoods": "Асортимент торговців (товари й ціни)",
   "Config.Setting.ShowHandbookTroughFeedOptions": "Показувати, що можна покласти в корито",
   "Config.Setting.ShowHandbookWorkableTemp": "Робоча температура",
+
   "Config.Category.Metalworking": "Металообробка",
   "Config.Setting.ShowAnvilWorkableTemp": "Робоча температура на ковадлі",
   "Config.Setting.ShowBloomeryProgress": "Прогрес сиродутного горна",
   "Config.Setting.ShowCementationFurnaceProgress": "Прогрес цементації (виробництво сталі)",
   "Config.Setting.ShowCharcoalPitProgress": "Прогрес вугільної ями",
   "Config.Setting.ShowCokeOvenProgress": "Прогрес коксової печі",
-  "Config.Setting.ShowStackMetalUnits": "Загальна кількість одиниць металу в стопці",
+  "Config.Setting.ShowStackMetalUnits": "Загальна к-сть одиниць металу в стопці",
+
   "Config.Category.Processing": "Переробка",
   "Config.Setting.ShowBeehiveKilnProgress": "Прогрес вуликоподібної печі",
   "Config.Setting.ShowBoilerProgress": "Прогрес палива перегінного куба",
   "Config.Setting.ShowFirepitProgress": "Прогрес приготування в багатті",
   "Config.Setting.ShowPitKilnProgress": "Прогрес ями для обпалювання",
   "Config.Setting.ShowQuernGrindingProgress": "Прогрес помелу в жорнах",
+
   "Config.Category.Husbandry": "Господарство",
   "Config.Setting.ShowAnimalLactationProgress": "Прогрес лактації",
   "Config.Setting.ShowAnimalPregnancyProgress": "Прогрес вагітності та спарювання",
@@ -41,11 +47,13 @@
   "Config.Setting.ShowSkepProgress": "Прогрес виробництва меду (вулики, сапетки)",
   "Config.Setting.ShowTreeProgress": "Прогрес росту посаджених паростків і насінин дерев та живців фруктових дерев",
   "Config.Setting.ShowTreeStats": "Статистика в підказці паростка/насінини дерева",
+
   "Config.Category.Misc": "Різне",
   "Config.Setting.ShowBombStats": "Характеристики бомб (радіус вибуху, тип тощо)",
   "Config.Setting.ShowMechanicalBlockInfo": "Інформація про механічну силу",
-  "Config.Setting.ShowPileTotalItems": "Загальна кількість предметів у купах",
+  "Config.Setting.ShowPileTotalItems": "Загальна к-сть предметів у купах",
   "Config.Setting.ShowTranslocatorDestination": "Призначення транслокатора",
+
   "block-info-header-until-broken": "До руйнування:",
   "WillFinishIn": "Завершиться через:",
   "beehivekiln-paused-left": "Випалювання призупинено, залишилось:",
@@ -57,8 +65,8 @@
   "TimeUntilTransition": "До перетворення:",
   "quern-progress-info-header-total": "Усього:",
   "quern-progress-info-header-single-item": "Один предмет:",
-  "ground-storage-total-pile-item-count": "Загальна кількість предметів: {0}",
-  "ground-storage-current-pile-type-count": "Кількість предметів цього типу: {0}",
+  "ground-storage-total-pile-item-count": "Загальна к-сть предметів: {0}",
+  "ground-storage-current-pile-type-count": "К-сть предметів цього типу: {0}",
   "WillSproutIn": "Проросте через:",
   "WillMatureIn": "Виросте через:",
   "sprout-in-days": "Час проростання: {0} - {p1:# днів|# день|# дні|# дні|# дні|# днів}",
@@ -92,5 +100,7 @@
   "Mechanics.Speed": "Швидкість: {0:G4}",
   "Mechanics.TotalAvailableTorque": "Доступний крутний момент: {0:G4}",
   "Mechanics.NetworkTorque": "Загальний крутний момент: {0:G4}",
-  "Mechanics.NetworkResistance": "Опір: {0:G4}"
+  "Mechanics.NetworkResistance": "Опір: {0:G4}",
+
+  "Minutes": "{p0:# хвилин|# хвилина|# хвилини|# хвилини|# хвилини|# хвилин}"
 }

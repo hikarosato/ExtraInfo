@@ -22,10 +22,10 @@ public static class NuggetMetalUnitsPatch
         float totalUnits = unitsPerNugget * inSlot.StackSize;
 
         string smeltingType = props.SmeltingType.ToString().ToLowerInvariant();
-        
+
         string? metalCode = props.SmeltedStack.ResolvedItemstack.Collectible.Variant?["metal"];
-        string metalName = metalCode != null 
-            ? Lang.Get("material-" + metalCode) 
+        string metalName = metalCode != null
+            ? Lang.Get("material-" + metalCode)
             : props.SmeltedStack.ResolvedItemstack.GetName().Replace(" ingot", "");
 
         dsc.AppendLine(Lang.Get("game:smeltdesc-" + smeltingType + "ore-plural", totalUnits.ToString("0.#"), metalName));

@@ -26,7 +26,7 @@ public static class BoilerProgressPatch
          * while crafting timer info for current cycle is just 4 seconds.
          * We don't need timers for very short processes
          */
-        
+
         // Fuel progress
         if (blockEntity.IsBurning || blockEntity.IsSmoldering)
         {

@@ -102,5 +102,7 @@
   "Mechanics.Speed": "Speed: {0:G4}",
   "Mechanics.TotalAvailableTorque": "Available Torque: {0:G4}",
   "Mechanics.NetworkTorque": "Total Torque: {0:G4}",
-  "Mechanics.NetworkResistance": "Resistance: {0:G4}"
+  "Mechanics.NetworkResistance": "Resistance: {0:G4}",
+
+  "Minutes": "{p0:# minutes|# minute|# minutes}"
 }

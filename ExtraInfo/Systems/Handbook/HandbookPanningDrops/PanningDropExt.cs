@@ -15,7 +15,7 @@ public class PanningDropExt : JsonItemStack
     public static PanningDropExt FromOriginal(PanningDrop original)
     {
         PanningDropExt ext = new PanningDropExt();
-        
+
         ext.Type = original.Type;
         ext.Code = original.Code?.Clone();
         ext.StackSize = original.StackSize;
@@ -38,7 +38,7 @@ public class PanningDropExt : JsonItemStack
 
     protected override void CloneTo(object stack)
     {
-        base.CloneTo(stack); 
+        base.CloneTo(stack);
         if (stack is PanningDropExt pDropExt)
         {
             pDropExt.Chance = this.Chance?.Clone();

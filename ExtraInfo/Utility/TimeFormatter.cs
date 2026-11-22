@@ -7,63 +7,33 @@ namespace ExtraInfo;
 
 public static class TimeFormatter
 {
-    // Same format as in ExtraInfo 2.0.1: "N hours, M minutes" (both rounded down), game time.
-    public static string HoursAndMinutes(double hours)
+    public static string FormatGameTime(double hours, double hoursPerDay = 24)
     {
         if (double.IsNaN(hours) || double.IsInfinity(hours) || hours < 0) hours = 0;
-        double minutes = Math.Floor((hours - Math.Truncate(hours)) * 60.0);
-        return Lang.Get("{0} hours, {1} minutes", Math.Floor(hours), minutes);
-    }
+        if (hoursPerDay <= 0) hoursPerDay = 24;
 
-    public static string FormatFullTime(double totalSeconds)
-    {
-        if (double.IsNaN(totalSeconds) || double.IsInfinity(totalSeconds)) return "";
+        int days = (int)Math.Floor(hours / hoursPerDay);
+        double rest = hours - days * hoursPerDay;
+        int h = (int)Math.Floor(rest);
+        int m = (int)Math.Floor((rest - h) * 60.0);
 
-        totalSeconds = Math.Clamp(totalSeconds, 0, TimeSpan.MaxValue.TotalSeconds - 1);
-
-        TimeSpan t = TimeSpan.FromSeconds(totalSeconds);
-
-        if (t.TotalDays >= 1)
-        {
-            int days = (int)Math.Floor(t.TotalDays);
-            int hours = t.Hours;
-            int minutes = t.Minutes;
-
-            if (hours > 0 && minutes > 0)
-                return Lang.Get("{0} days, {1} hours, {2} minutes", days, hours, minutes);
-
-            if (hours > 0)
-                return Lang.Get("{0} days, {1} hours", days, hours);
-
+        // 2 days or more: days only
+        if (days >= 2)
             return Lang.Get("count-days", days);
-        }
 
-        if (t.TotalHours >= 1)
+        // 1 day and up to 23 hours: days plus hours, no minutes
+        if (days == 1)
         {
-            int hours = (int)Math.Floor(t.TotalHours);
-            int minutes = t.Minutes;
-            int seconds = t.Seconds;
-
-            if (minutes > 0 && seconds > 0)
-                return Lang.Get("{0} hours, {1} minutes, {2} seconds", hours, minutes, seconds);
-
-            if (minutes > 0)
-                return Lang.Get("{0} hours, {1} minutes", hours, minutes);
-
-            return Lang.Get("{0} hours", hours);
+            string daysText = Lang.Get("count-days", days);
+            return h > 0 ? daysText + ", " + Lang.Get("{0} hours", h) : daysText;
         }
 
-        if (t.TotalMinutes >= 1)
-        {
-            int minutes = t.Minutes;
-            int seconds = t.Seconds;
+        // Under an hour: minutes only, never less than 1 minute
+        if (h == 0)
+            return Lang.Get("extrainfo:Minutes", Math.Max(1, m));
 
-            return seconds > 0
-                ? Lang.Get("{0} minutes, {1} seconds", minutes, seconds)
-                : Lang.Get("{0} minutes", minutes);
-        }
-
-        return Lang.Get("{0} seconds", t.Seconds);
+        // Under a day: hours and minutes
+        return Lang.Get("{0} hours, {1} minutes", h, m);
     }
 
     public static string BuildTimeBlockPlusProgressBar(ICoreAPI api, TimeBasedProgressBarProperties props, bool reversed = false)
@@ -98,7 +68,7 @@ public static class TimeFormatter
 
         // Time
         if (igSeconds > 0 && props.ShowInGameTime)
-            sb.Append(TextExtensions.ColorText(HoursAndMinutes(igSeconds / 3600.0)));
+            sb.Append(TextExtensions.ColorText(FormatGameTime(igSeconds / 3600.0, api.World.Calendar.HoursPerDay)));
 
         return sb.ToString().TrimEnd();
     }
