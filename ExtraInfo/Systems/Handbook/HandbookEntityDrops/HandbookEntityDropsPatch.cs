@@ -92,7 +92,7 @@ public static class HandbookEntityDropsPatch
                 richTextHarvest.AddStack(capi, openDetailPageFor, stack);
             }
 
-            if (entityType.Drops.Length != 0 && entityType.Drops.ToList().Find(stack => stack.Code == collObj.Code) != null)
+            if (entityType.Drops != null && entityType.Drops.Length != 0 && entityType.Drops.ToList().Find(stack => stack.Code == collObj.Code) != null)
             {
                 ItemStack? stack = entityType.GetCreatureStack(capi);
                 if (stack == null) continue;

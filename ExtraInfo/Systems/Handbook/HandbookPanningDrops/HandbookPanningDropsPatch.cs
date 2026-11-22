@@ -60,6 +60,10 @@ public static partial class HandbookPanningDropsPatch
                         toDrops.Add(dropToResolve);
                     }
 
+                    // All drops in this variant group failed to resolve (e.g. disabled by another mod),
+                    // so there is nothing to show for this source material. Skip before indexing toDrops[0].
+                    if (toDrops.Count == 0) continue;
+
                     list.AddStacks(capi, openDetailPageFor, [.. toDrops.Select(x => x.ResolvedItemStack)!]);
 
                     float extraMul = toDrops[0].DropModbyStat == null ? 1f : capi.World.Player.Entity.Stats.GetBlended(toDrops[0].DropModbyStat);
