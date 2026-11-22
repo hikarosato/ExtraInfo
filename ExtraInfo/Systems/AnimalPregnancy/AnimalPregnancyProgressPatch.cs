@@ -35,7 +35,7 @@ public static class AnimalPregnancyProgressPatch
             }
             else
             {
-                infotext.AppendLine().Append(BuildBar(api, "extrainfo:animal-will-give-birth-in", totalDurationHours, hoursLeft));
+                infotext.AppendLine().Append(BuildBar(api, "extrainfo:animal-will-give-birth-in", totalDurationHours, hoursLeft)).AppendLine();
             }
         }
         else
@@ -48,7 +48,7 @@ public static class AnimalPregnancyProgressPatch
                 double totalCooldownHours = cooldownMax * hoursPerDay;
                 double hoursLeft = cooldownLeft * hoursPerDay;
 
-                infotext.AppendLine().Append(BuildBar(api, "extrainfo:animal-ready-to-mate-in", totalCooldownHours, hoursLeft));
+                infotext.AppendLine().Append(BuildBar(api, "extrainfo:animal-ready-to-mate-in", totalCooldownHours, hoursLeft)).AppendLine();
             }
         }
     }

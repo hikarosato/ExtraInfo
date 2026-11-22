@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using System;
 using System.Text;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -20,6 +21,15 @@ public static class BlockTransitionInfoPatch
         if (props == null) return;
 
         double hoursLeft = blockEntity.GetField<double>("transitionHoursLeft");
+
+        // The client-side BE copy doesn't tick (CheckTransition runs on the server only), so we subtract the time elapsed since the moment this value was last accurate.
+        double lastCheck = blockEntity.GetField<double>("lastCheckAtTotalDays");
+        IGameCalendar cal = blockEntity.Api.World.Calendar;
+        if (lastCheck > 0)
+        {
+            double elapsedHours = (cal.TotalDays - lastCheck) * cal.HoursPerDay;
+            hoursLeft -= Math.Max(0, elapsedHours);
+        }
 
         if (hoursLeft > 0)
         {
