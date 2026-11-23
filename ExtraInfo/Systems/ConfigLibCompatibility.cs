@@ -83,6 +83,7 @@ public class ConfigLibCompatibility
             DrawCheckBox(id, config, nameof(config.ShowBeehiveKilnProgress));
             DrawCheckBox(id, config, nameof(config.ShowBoilerProgress));
             DrawCheckBox(id, config, nameof(config.ShowFirepitProgress));
+            DrawCheckBox(id, config, nameof(config.ShowHeatForecast));
             DrawCheckBox(id, config, nameof(config.ShowPitKilnProgress));
             DrawCheckBox(id, config, nameof(config.ShowQuernGrindingProgress));
             ImGui.Unindent();

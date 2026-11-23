@@ -38,6 +38,7 @@ public class Config
     public bool ShowBeehiveKilnProgress { get; set; } = true;
     public bool ShowBoilerProgress { get; set; } = true;
     public bool ShowFirepitProgress { get; set; } = true;
+    public bool ShowHeatForecast { get; set; } = true;
     public bool ShowPitKilnProgress { get; set; } = true;
     public bool ShowQuernGrindingProgress { get; set; } = true;
     #endregion

@@ -37,6 +37,7 @@
   "Config.Setting.ShowFirepitProgress": "Прогрес приготування в багатті",
   "Config.Setting.ShowPitKilnProgress": "Прогрес ями для обпалювання",
   "Config.Setting.ShowQuernGrindingProgress": "Прогрес помелу в жорнах",
+  "Config.Setting.ShowHeatForecast": "Прогноз нагріву в багатті",
 
   "Config.Category.Husbandry": "Господарство",
   "Config.Setting.ShowAnimalLactationProgress": "Прогрес лактації",
@@ -45,7 +46,7 @@
   "Config.Setting.ShowFarmlandProgress": "Прогрес росту культур",
   "Config.Setting.ShowPumpkinVineProgress": "Прогрес росту гарбуза/лози",
   "Config.Setting.ShowSkepProgress": "Прогрес виробництва меду (вулики, сапетки)",
-  "Config.Setting.ShowTreeProgress": "Прогрес росту посаджених паростків і насінин дерев та живців фруктових дерев",
+  "Config.Setting.ShowTreeProgress": "Прогрес росту паростків і насінин дерев та живців фруктових дерев",
   "Config.Setting.ShowTreeStats": "Статистика в підказці паростка/насінини дерева",
 
   "Config.Category.Misc": "Різне",
@@ -72,7 +73,7 @@
   "sprout-in-days": "Час проростання: {0} - {p1:# днів|# день|# дні|# дні|# дні|# днів}",
   "mature-in-days": "Час дорослішання: {0} - {p1:# днів|# день|# дні|# дні|# дні|# днів}",
   "firepit-progress-smeltable-total": "Усього:",
-  "firepit-progress-smeltable-current": "Поточний:",
+  "firepit-progress-smeltable-current": "Поточне:",
   "firepit-progress-fuel-total": "Усе паливо вигорить через:",
   "firepit-progress-fuel-current": "Поточне паливо вигорить через:",
   "animal-ready-to-mate-in": "Готова до спарювання через:",
@@ -86,7 +87,7 @@
   "animal-milk-refill-in": "Наступне молоко через:",
   "WorkableTemperature": "Робоча температура: {0} °C",
   "AlwaysWorkable": "Робоча температура: завжди",
-  "Current": "Поточний",
+  "Current": "Поточне",
   "Damage": "Шкода: {0}",
   "One": "Одне",
   "Fuel": "Паливо",
@@ -102,5 +103,9 @@
   "Mechanics.NetworkTorque": "Загальний крутний момент: {0:G4}",
   "Mechanics.NetworkResistance": "Опір: {0:G4}",
 
-  "Minutes": "{p0:# хвилин|# хвилина|# хвилини|# хвилини|# хвилини|# хвилин}"
+  "Minutes": "{p0:# хвилин|# хвилина|# хвилини|# хвилини|# хвилини|# хвилин}",
+  "firepit-forecast-temp": "Температура: {0} / {1} °C",
+  "firepit-forecast-unreachable": "Паливо надто слабке (макс. {0} °C)",
+  "firepit-forecast-fuel-short": "Встигне лише {0} з {1}",
+  "firepit-forecast-residual": "Дійде на залишковому жарі"
 }

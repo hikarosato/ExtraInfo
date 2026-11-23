@@ -37,6 +37,7 @@
   "Config.Setting.ShowFirepitProgress": "Cooking progress in a firepit",
   "Config.Setting.ShowPitKilnProgress": "Pit kiln progress",
   "Config.Setting.ShowQuernGrindingProgress": "Quern grinding progress",
+  "Config.Setting.ShowHeatForecast": "Firepit heat forecast",
 
   "Config.Category.Husbandry": "Husbandry",
   "Config.Setting.ShowAnimalLactationProgress": "Lactation progress",
@@ -104,5 +105,9 @@
   "Mechanics.NetworkTorque": "Total Torque: {0:G4}",
   "Mechanics.NetworkResistance": "Resistance: {0:G4}",
 
-  "Minutes": "{p0:# minutes|# minute|# minutes}"
+  "Minutes": "{p0:# minutes|# minute|# minutes}",
+  "firepit-forecast-temp": "Temperature: {0} / {1}°C",
+  "firepit-forecast-unreachable": "Fuel is too weak (max {0}°C)",
+  "firepit-forecast-fuel-short": "Only {0} of {1} in time",
+  "firepit-forecast-residual": "Finishes on leftover heat"
 }
