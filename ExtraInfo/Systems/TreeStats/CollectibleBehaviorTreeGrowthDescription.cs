@@ -60,11 +60,12 @@ public class CollectibleBehaviorTreeGrowthDescription : CollectibleBehavior
         int minDays = GetMin(days);
         int maxDays = GetMax(days);
 
-        // FormatGameTime never shows less than 1 minute, so zero is handled here
-        string min = minDays <= 0
-            ? "0"
-            : TimeFormatter.FormatGameTime(minDays * calendar.HoursPerDay, calendar.HoursPerDay, calendar.DaysPerMonth);
         string max = TimeFormatter.FormatGameTime(maxDays * calendar.HoursPerDay, calendar.HoursPerDay, calendar.DaysPerMonth);
+
+        // Minimum is zero: show only the maximum ("1 day" instead of "0 - 1 day")
+        if (minDays <= 0) return max;
+
+        string min = TimeFormatter.FormatGameTime(minDays * calendar.HoursPerDay, calendar.HoursPerDay, calendar.DaysPerMonth);
 
         return min == max ? min : min + " - " + max;
     }
