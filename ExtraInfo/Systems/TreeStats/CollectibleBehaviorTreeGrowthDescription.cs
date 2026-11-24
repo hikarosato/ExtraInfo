@@ -45,11 +45,27 @@ public class CollectibleBehaviorTreeGrowthDescription : CollectibleBehavior
 
         if (sproutDays != null)
         {
-            dsc.AppendLine(Lang.Get("extrainfo:sprout-in-days", GetMin(sproutDays), GetMax(sproutDays)));
+            dsc.AppendLine(Lang.Get("extrainfo:sprout-time", FormatDaysRange(world, sproutDays)));
         }
         if (matureDays != null)
         {
-            dsc.AppendLine(Lang.Get("extrainfo:mature-in-days", GetMin(matureDays), GetMax(matureDays)));
+            dsc.AppendLine(Lang.Get("extrainfo:mature-time", FormatDaysRange(world, matureDays)));
         }
+    }
+
+    private static string FormatDaysRange(IWorldAccessor world, NatFloat days)
+    {
+        var calendar = world.Calendar;
+
+        int minDays = GetMin(days);
+        int maxDays = GetMax(days);
+
+        // FormatGameTime never shows less than 1 minute, so zero is handled here
+        string min = minDays <= 0
+            ? "0"
+            : TimeFormatter.FormatGameTime(minDays * calendar.HoursPerDay, calendar.HoursPerDay, calendar.DaysPerMonth);
+        string max = TimeFormatter.FormatGameTime(maxDays * calendar.HoursPerDay, calendar.HoursPerDay, calendar.DaysPerMonth);
+
+        return min == max ? min : min + " - " + max;
     }
 }

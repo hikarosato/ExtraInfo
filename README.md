@@ -10,6 +10,7 @@ This version is a rework focused on **accurate numbers** and a **clean, compact 
 
 - **Accurate timers.** Several calculations were rewritten to mirror the game's own logic (firepit, coke oven, coal piles, beehive kiln, cementation furnace, farmland, pumpkin vines, animal pregnancy, and more). See [What was fixed](#what-was-fixed).
 - **Compact, readable tooltips.** Each timer is one line, e.g. `Will finish in: 42% 3 hours, 12 minutes`, instead of a multi-line block with an ASCII bar and a separate real-time line.
+- **Calendar-aware time.** Durations use the world's `daysPerMonth` (a year is 12 months) and show at most two adjacent units: `1 year 3 months`, `3 days 4 hours`, `5 hours 12 minutes`.
 - **Whole-growth projections.** Farmland, saplings and seeds now show the time to the *next* stage **and** the time until fully grown.
 - **New: firepit heat forecast.** Shows the item's temperature against the temperature it needs, warns when the fuel is too weak or when neither the fuel nor the leftover heat is enough to cook everything, and the cooking times now include the time needed to heat the item up and the cooking done on leftover heat after the fuel runs out.
 - **New: fruit tree cuttings.** Shows the time until the cutting roots (or fails).
@@ -64,7 +65,7 @@ Every item below is a correctness or stability fix compared to the previous vers
 |---|---|---|
 | Tooltip layout | Header line, ASCII bar line, in-game time line, real-time line, blank lines | One line per timer, no stray blank lines |
 | Progress display | Configurable ASCII bar (`[####____] 42%`) | Coloured percentage (`42%`) |
-| Time format | Seconds-level, long (`3 hours, 12 minutes, 5 seconds`) | Compact: days only from 2 days; `1 day, 3 hours`; `3 hours, 12 minutes`; `N minutes` |
+| Time format | Seconds-level, long (`3 hours, 12 minutes, 5 seconds`) | Years, months, days, hours and minutes; at most two adjacent units (`1 year 3 months`, `3 days 4 hours`); month length follows `daysPerMonth`; localizable keys |
 | Real-time (IRL) display | Yes | Removed |
 | Config options | 11 settings for time and bar | 3 settings (`ShowInGameTimeInfo`, `ShowProgressPercent`, ...) |
 | Config GUI | Included an animated bar preview and symbol pickers | Slimmer GUI, ~170 fewer lines |
@@ -91,4 +92,6 @@ Old config files remain valid; removed options are simply ignored.
 
 ## Localization
 
-This version introduces the keys `extrainfo:Minutes`, `extrainfo:Color.Cyan`, `extrainfo:TotalGrowthIn`, `extrainfo:TimeUntilRooting`, `extrainfo:beehivekiln-paused-left`, `extrainfo:firepit-forecast-temp`, `extrainfo:firepit-forecast-unreachable`, `extrainfo:firepit-forecast-fuel-short`, `extrainfo:firepit-forecast-fuel-short`, `extrainfo:firepit-forecast-residual` and `extrainfo:Config.Setting.ShowHeatForecast`.
+This version introduces the keys `extrainfo:Time.Year`, `extrainfo:Time.Month`, `extrainfo:Time.Day`, `extrainfo:Time.Hour`, `extrainfo:Time.Minute`, `extrainfo:sprout-time`, `extrainfo:mature-time`, `extrainfo:Color.Cyan`, `extrainfo:TotalGrowthIn`, `extrainfo:TimeUntilRooting`, `extrainfo:beehivekiln-paused-left`, `extrainfo:firepit-forecast-temp`, `extrainfo:firepit-forecast-unreachable`, `extrainfo:firepit-forecast-fuel-short`, `extrainfo:firepit-forecast-residual` and `extrainfo:Config.Setting.ShowHeatForecast`.
+
+The keys `extrainfo:Minutes`, `extrainfo:sprout-in-days` and `extrainfo:mature-in-days` are no longer used.

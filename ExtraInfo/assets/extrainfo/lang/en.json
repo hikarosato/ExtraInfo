@@ -70,8 +70,8 @@
   "ground-storage-current-pile-type-count": "Current type item count: {0}",
   "WillSproutIn": "Will sprout in:",
   "WillMatureIn": "Will mature in:",
-  "sprout-in-days": "Sprout time: {0} - {p1:# days|# day|# days}",
-  "mature-in-days": "Mature time: {0} - {p1:# days|# day|# days}",
+  "sprout-time": "Sprout time: {0}",
+  "mature-time": "Mature time: {0}",
   "firepit-progress-smeltable-total": "Total:",
   "firepit-progress-smeltable-current": "Current:",
   "firepit-progress-fuel-total": "All fuel will be depleted in:",
@@ -105,9 +105,14 @@
   "Mechanics.NetworkTorque": "Total Torque: {0:G4}",
   "Mechanics.NetworkResistance": "Resistance: {0:G4}",
 
-  "Minutes": "{p0:# minutes|# minute|# minutes}",
   "firepit-forecast-temp": "Temperature: {0} / {1}°C",
   "firepit-forecast-unreachable": "Fuel is too weak (max {0}°C)",
   "firepit-forecast-fuel-short": "Only {0} of {1} in time",
-  "firepit-forecast-residual": "Finishes on leftover heat"
+  "firepit-forecast-residual": "Finishes on leftover heat",
+
+  "Time.Year": "{p0:# years|# year|# years}",
+  "Time.Month": "{p0:# months|# month|# months}",
+  "Time.Day": "{p0:# days|# day|# days}",
+  "Time.Hour": "{p0:# hours|# hour|# hours}",
+  "Time.Minute": "{p0:# minutes|# minute|# minutes}"
 }

@@ -7,33 +7,59 @@ namespace ExtraInfo;
 
 public static class TimeFormatter
 {
-    public static string FormatGameTime(double hours, double hoursPerDay = 24)
+    private const int MonthsPerYear = 12;
+
+    // How many adjacent units to show at most: "1 y. 3 mo.", "3 d. 4 h", "12 h 30 min"
+    private const int MaxParts = 2;
+
+    public static string FormatGameTime(double hours, double hoursPerDay = 24, double daysPerMonth = 9)
     {
         if (double.IsNaN(hours) || double.IsInfinity(hours) || hours < 0) hours = 0;
         if (hoursPerDay <= 0) hoursPerDay = 24;
+        if (daysPerMonth < 1) daysPerMonth = 9;
 
-        int days = (int)Math.Floor(hours / hoursPerDay);
-        double rest = hours - days * hoursPerDay;
-        int h = (int)Math.Floor(rest);
-        int m = (int)Math.Floor((rest - h) * 60.0);
+        long secPerDay = (long)Math.Round(hoursPerDay * 3600.0);
+        long secPerMonth = secPerDay * (long)Math.Round(daysPerMonth);
+        long secPerYear = secPerMonth * MonthsPerYear;
 
-        // 2 days or more: days only
-        if (days >= 2)
-            return Lang.Get("count-days", days);
+        (long Size, string Key)[] units =
+        [
+            (secPerYear, "extrainfo:Time.Year"),
+            (secPerMonth, "extrainfo:Time.Month"),
+            (secPerDay, "extrainfo:Time.Day"),
+            (3600, "extrainfo:Time.Hour"),
+            (60, "extrainfo:Time.Minute"),
+        ];
 
-        // 1 day and up to 23 hours: days plus hours, no minutes
-        if (days == 1)
+        // Smallest unit is a minute: anything under it is shown as "1 min"
+        long rest = Math.Max(60, (long)Math.Round(hours * 3600.0));
+
+        var sb = new StringBuilder();
+        int parts = 0;
+
+        foreach (var (size, key) in units)
         {
-            string daysText = Lang.Get("count-days", days);
-            return h > 0 ? daysText + ", " + Lang.Get("{0} hours", h) : daysText;
+            if (size <= 0) continue;
+
+            long count = rest / size;
+            rest -= count * size;
+
+            if (count > 0)
+            {
+                if (parts > 0) sb.Append(' ');
+                sb.Append(Lang.Get(key, (int)count));
+                parts++;
+            }
+            else if (parts > 0)
+            {
+                // Only adjacent units: no "1 y. 0 mo. 3 d."
+                break;
+            }
+
+            if (parts == MaxParts) break;
         }
 
-        // Under an hour: minutes only, never less than 1 minute
-        if (h == 0)
-            return Lang.Get("extrainfo:Minutes", Math.Max(1, m));
-
-        // Under a day: hours and minutes
-        return Lang.Get("{0} hours, {1} minutes", h, m);
+        return sb.ToString();
     }
 
     public static string BuildTimeBlockPlusProgressBar(ICoreAPI api, TimeBasedProgressBarProperties props, bool reversed = false)
@@ -68,7 +94,11 @@ public static class TimeFormatter
 
         // Time
         if (igSeconds > 0 && props.ShowInGameTime)
-            sb.Append(TextExtensions.ColorText(FormatGameTime(igSeconds / 3600.0, api.World.Calendar.HoursPerDay)));
+        {
+            var calendar = api.World.Calendar;
+            sb.Append(TextExtensions.ColorText(
+                FormatGameTime(igSeconds / 3600.0, calendar.HoursPerDay, calendar.DaysPerMonth)));
+        }
 
         return sb.ToString().TrimEnd();
     }
